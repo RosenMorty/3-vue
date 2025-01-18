@@ -10,7 +10,7 @@ export const getProducts = async (page: number = 1): Promise<IProduct[]> => {
   try {
     const query = new URLSearchParams({
       page: String(page),
-      limit: String(8),
+      limit: String(1000),
     });
     const fetchResponse = await fetch(
       `https://vue-study.skillbox.cc/api/products?${query}`

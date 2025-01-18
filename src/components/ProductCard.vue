@@ -1,5 +1,12 @@
 <template>
-  <div :class="['product']">
+  <div
+    :class="[
+      'product',
+      {
+        'product-with-small-price': propsIsSmall,
+      },
+    ]"
+  >
     <img
       :src="product.image.file.url"
       class="product-img-top"
@@ -7,13 +14,37 @@
     />
     <div class="product-body">
       <h5 class="product-title">{{ product.title }}</h5>
-      <p :class="['product-text']">{{ product.price }} ₽</p>
+      <p
+        :class="[
+          'product-text',
+          {
+            'product-text-with-small-price': propsIsSmall,
+          },
+        ]"
+      >
+        {{ product.price }} ₽
+      </p>
     </div>
+    <button @click="showSmallPriceClass = !showSmallPriceClass">
+      change class
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { IProduct } from "@/types/product.ts";
+import { computed } from "vue";
+import { ref } from "vue";
+
+const showSmallPriceClass = ref(false);
+
+const propsIsSmall = computed(() => {
+  return (
+    showSmallPriceClass.value &&
+    props.product.price !== undefined &&
+    props.product.price < 5000
+  );
+});
 const props = defineProps<{ product: IProduct }>();
 </script>
 
