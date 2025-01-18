@@ -9,19 +9,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink, useRouter, useRoute } from 'vue-router';
+import { ref } from "vue";
+import { RouterLink, useRouter, useRoute } from "vue-router";
 
 const user = {
-  isManager: true
-}
+  isManager: true,
+};
 
-const  router = useRouter()
+const router = useRouter();
 
-const route = useRoute()
+const route = useRoute();
 console.log(route);
-
-
 </script>
 
 <style>

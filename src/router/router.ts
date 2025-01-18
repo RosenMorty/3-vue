@@ -1,31 +1,28 @@
-import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from "vue-router";
 
 const router = createRouter({
-    history: createWebHistory('/'),
-    routes: [
-        {
-            name: 'main',
-            path: '/main',
-            component: () => import('@/views/MainView.vue'),
-            children: [
-                {
-                    name: 'sales',
-                    path: 'sales',
-                    component: () => import('@/views/MainSalesView.vue'),
-                },
-                {
-                    name: 'catalog',
-                    path: 'catalog',
-                    component: () => import('@/views/MainCatalogView.vue'),
-                }
-            ]
-        },
-        {
-            name: 'settings',
-            path: '/settings',
-            component: () => import('@/views/SettingsView.vue')
-        },
-    ]
-})
+  history: createWebHistory("/"),
+  routes: [
+    {
+      name: "catalog",
+      path: "/catalog",
+      component: () => import("@/views/CatalogView.vue"),
+    },
+    {
+      name: "product",
+      path: "/product/:id",
+      component: () => import("@/views/ProductView.vue"),
+    },
+    {
+      name: "not-found",
+      path: "/:pathMach(.*)*",
+      component: () => import("@/views/NotFoundView.vue"),
+    },
+  ],
+});
 
-export default router
+export default router;
