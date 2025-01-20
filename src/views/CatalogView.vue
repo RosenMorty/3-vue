@@ -1,14 +1,16 @@
 <template>
   <h2>Каталог</h2>
   <div class="filters">
-    <p>цена от:</p>
-    <input type="text" v-model="minPrice" />
-    <p>до:</p>
-    <input type="text" v-model="maxPrice" />
+    <p>Поиск</p>
+    <input
+      type="searchText"
+      v-model="searchText"
+      placeholder="Введите больше 2-х символов"
+    />
   </div>
   <div class="product-list">
     <product-card
-      v-for="product in filtetedComputed"
+      v-for="product in products"
       :key="product.id"
       :product="product"
     />
@@ -23,12 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watchEffect } from "vue";
 import { getProducts } from "@/api/product";
 import type { IProduct } from "@/types/product";
 import ProductCard from "@/components/ProductCard.vue";
 import type { IPagination } from "@/types/global";
 import AppPagination from "@/components/AppPagination.vue";
+import { watch } from "vue";
 
 const products = ref<IProduct[]>([]);
 const pagination = ref<IPagination>({
@@ -37,36 +40,47 @@ const pagination = ref<IPagination>({
   total: 0,
 });
 
-const minPrice = ref<number | null>(null);
-const maxPrice = ref<number | null>(null);
+const searchText = ref("");
 
-const filtetedComputed = computed(() => {
-  return products.value.filter((product) => {
-    if (
-      (minPrice.value && product.price < minPrice.value) ||
-      (maxPrice.value && product.price > maxPrice.value)
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  });
-});
-
-const loadProducts = async (page: number) => {
-  const response = await getProducts(page);
+const loadProducts = async (page: number, searchText?: string) => {
+  const response = await getProducts(page, searchText);
   products.value = response.products;
   pagination.value = response.pagination;
-  console.log(response);
 };
 
 const changePage = async (page: number) => {
-  if (!page !== pagination.value.page) {
+  if (page !== pagination.value.page) {
     await loadProducts(page);
   }
 };
 
-loadProducts(pagination.value.page);
+const obj = ref({ id: 1 });
+
+setTimeout(() => {
+  obj.value.id = 2;
+});
+
+watch(
+  obj,
+  (newVal) => {
+    console.log(newVal);
+  },
+  { deep: true }
+);
+
+watchEffect((obj) => {});
+
+watch(
+  searchText,
+  (newVal, oldVal) => {
+    if (newVal.length > 2) {
+      loadProducts(1, newVal);
+    } else {
+      loadProducts(1);
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
