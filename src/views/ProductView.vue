@@ -17,48 +17,39 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import type { IProduct } from "@/types/product";
+import { IProduct } from "@/types/product";
 
-export default {
-  setup() {
-    const route = useRoute();
-    const product = ref<IProduct | null>(null);
+const route = useRoute();
+const product = ref<IProduct | null>(null);
 
-    // Функция для получения данных товара
-    const getProduct = async (productId: number) => {
-      try {
-        const response = await fetch(
-          `https://vue-study.skillbox.cc/api/products/${productId}`
-        );
-        if (!response.ok) {
-          throw new Error("Ошибка при загрузке данных");
-        }
-        const data = await response.json();
-        product.value = data;
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    // Получаем данные товара при монтировании компонента
-    onMounted(() => {
-      const productId = Number(route.params.id); // Получаем id из маршрута
-      if (!isNaN(productId)) {
-        getProduct(productId); // Загружаем товар по id
-      } else {
-        console.error("Неверный формат ID");
-      }
-    });
-
-    // Возвращаем переменные и методы для использования в шаблоне
-    return {
-      product: product,
-    };
-  },
+// Функция для получения данных товара
+const getProduct = async (productId: number): Promise<void> => {
+  try {
+    const response = await fetch(
+      `https://vue-study.skillbox.cc/api/products/${productId}`
+    );
+    if (!response.ok) {
+      throw new Error("Ошибка при загрузке данных");
+    }
+    const data = await response.json();
+    product.value = data;
+  } catch (error) {
+    console.error(error);
+  }
 };
+
+// Получаем данные товара при монтировании компонента
+onMounted(() => {
+  const productId = Number(route.params.id); // Получаем id из маршрута
+  if (!isNaN(productId)) {
+    getProduct(productId); // Загружаем товар по id
+  } else {
+    console.error("Неверный формат ID");
+  }
+});
 </script>
 
 <style scoped>

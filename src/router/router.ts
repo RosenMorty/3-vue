@@ -18,6 +18,11 @@ const router = createRouter({
       path: "/:pathMach(.*)*",
       component: () => import("@/views/NotFoundView.vue"),
     },
+    {
+      name: "swapi",
+      path: "/swapi",
+      component: () => import("@/views/SwapiView.vue"),
+    },
   ],
 });
 
