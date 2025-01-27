@@ -45,6 +45,7 @@ const propsIsSmall = computed(() => {
     props.product.price < 5000
   );
 });
+
 const props = defineProps<{ product: IProduct }>();
 </script>
 

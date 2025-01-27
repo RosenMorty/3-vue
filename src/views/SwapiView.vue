@@ -10,12 +10,39 @@
       <h5 class="skin_color">Цвет кожи: {{}}</h5>
       <h5 class="eye_color">Цвет глаз: {{}}</h5>
       <h5 class="gender">Цвет кожи: {{}}</h5>
+      <div class="swapi-list"></div>
     </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
+<script setup lang="ts">
+import { ref, onMounted, computed } from "vue";
+import { ISwapi } from "@/types/swapi";
+import { useRoute } from "vue-router";
+import SwapiCard from "@/components/SwapiCard.vue";
+
+const route = useRoute();
+const guys = ref<ISwapi | null>(null);
+const searchQuery = ref("");
+
+const getSwapiG = async (swapiId: number): Promise<void> => {
+  try {
+    const response = await fetch("https://swapi.dev/api/");
+    if (!response.ok) {
+      throw new Error("Ошибка загрузки данных");
+    }
+    const data = await response.json();
+    guys.value = data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const filteredSwapiGuys = computed(() =>
+  guys.value.filter((guy) =>
+    guy.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+  )
+);
 </script>
 
 <style scoped>

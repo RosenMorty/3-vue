@@ -54,33 +54,26 @@ const changePage = async (page: number) => {
   }
 };
 
-const obj = ref({ id: 1 });
-
-setTimeout(() => {
-  obj.value.id = 2;
+watchEffect(() => {
+  const search = searchText.value;
+  if (search) {
+    loadProducts(1, search);
+  } else {
+    loadProducts(1);
+  }
 });
 
-watch(
-  obj,
-  (newVal) => {
-    console.log(newVal);
-  },
-  { deep: true }
-);
-
-watchEffect((obj) => {});
-
-watch(
-  searchText,
-  (newVal, oldVal) => {
-    if (newVal.length > 2) {
-      loadProducts(1, newVal);
-    } else {
-      loadProducts(1);
-    }
-  },
-  { immediate: true }
-);
+// watch(
+//   searchText,
+//   (newVal, oldVal) => {
+//     if (newVal.length > 2) {
+//       loadProducts(1, newVal);
+//     } else {
+//       loadProducts(1);
+//     }
+//   },
+//   { immediate: true }
+// );
 </script>
 
 <style scoped>
