@@ -53,7 +53,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Стили для компонента */
 img {
   max-width: 200px;
   max-height: 200px;
@@ -61,9 +60,11 @@ img {
 }
 
 .product {
+  border: 1rem solid;
   width: 200px;
   margin: 10px;
-  border: 1px solid transparent;
+  border: thick double #32a1ce;
+  padding: 10px;
   border-radius: 6px;
 }
 .product-with-small-price {

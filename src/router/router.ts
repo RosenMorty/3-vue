@@ -36,14 +36,14 @@ const router = createRouter({
       component: () => import("@/views/NotFoundView.vue"),
     },
     {
-      name: "swapi",
-      path: "/swapi",
-      component: () => import("@/views/SwapiView.vue"),
-    },
-    {
       name: "counter",
       path: "/counter",
       component: () => import("@/views/DoubleCount.vue"),
+    },
+    {
+      name: "calculator",
+      path: "/calculator",
+      component: () => import("@/views/CalculatorView.vue"),
     },
   ],
 });
