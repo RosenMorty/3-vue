@@ -18,6 +18,11 @@ const router = createRouter({
       path: "/:pathMach(.*)*",
       component: () => import("@/views/NotFoundView.vue"),
     },
+    {
+      name: "calculator",
+      path: "/calculator",
+      component: () => import("@/views/CalculatorView.vue"),
+    },
   ],
 });
 

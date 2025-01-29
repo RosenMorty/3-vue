@@ -1,7 +1,10 @@
 <template>
   <div class="container">
     <div class="header">
-      <router-link to="main">main link</router-link>
+      <router-link to="main">Main</router-link>
+      <router-link to="catalog">Catalog</router-link>
+      <router-link to="product/:id">Product</router-link>
+      <router-link to="calculator">Calculator</router-link>
     </div>
     <h1>Project title</h1>
     <router-view />
@@ -30,6 +33,7 @@ body {
 .container {
   width: 80%;
   margin: 0 auto;
+  height: 1500px;
 }
 
 .header {

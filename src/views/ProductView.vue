@@ -27,7 +27,6 @@ export default {
     const route = useRoute();
     const product = ref<IProduct | null>(null);
 
-    // Функция для получения данных товара
     const getProduct = async (productId: number) => {
       try {
         const response = await fetch(
@@ -43,17 +42,15 @@ export default {
       }
     };
 
-    // Получаем данные товара при монтировании компонента
     onMounted(() => {
-      const productId = Number(route.params.id); // Получаем id из маршрута
+      const productId = Number(route.params.id);
       if (!isNaN(productId)) {
-        getProduct(productId); // Загружаем товар по id
+        getProduct(productId);
       } else {
         console.error("Неверный формат ID");
       }
     });
 
-    // Возвращаем переменные и методы для использования в шаблоне
     return {
       product: product,
     };
@@ -62,7 +59,6 @@ export default {
 </script>
 
 <style scoped>
-/* Стили для компонента */
 img {
   max-width: 200px;
   max-height: 200px;
@@ -70,9 +66,11 @@ img {
 }
 
 .product {
+  border: 1rem solid;
   width: 200px;
   margin: 10px;
-  border: 1px solid transparent;
+  border: thick double #32a1ce;
+  padding: 10px;
   border-radius: 6px;
 }
 .product-with-small-price {

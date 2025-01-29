@@ -40,20 +40,31 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch, computed } from "vue";
+import {
+  reactive,
+  ref,
+  watch,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
 
-// Реактивное состояние для полей формы
 const form = reactive({
   amount: null,
   interestRate: null,
   duration: null,
 });
 
-// Переменные для отображения результата и состояния загрузки
+const resetCalc = () => {
+  form.amount = null;
+  form.interestRate = null;
+  form.duration = null;
+};
+
 const profit = ref(null);
 const loading = ref(false);
+const isScrolled = ref(false);
 
-// Имитация асинхронного запроса на бэкенд
 const getCalculatedProfit = async ({ amount, interestRate, duration }) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -64,7 +75,6 @@ const getCalculatedProfit = async ({ amount, interestRate, duration }) => {
   });
 };
 
-// Дебаунс-функция
 const debounce = (func, delay) => {
   let timeout;
   return (...args) => {
@@ -73,7 +83,6 @@ const debounce = (func, delay) => {
   };
 };
 
-// Функция расчета прибыли
 const calculateProfit = async () => {
   if (form.amount > 0 && form.interestRate > 0 && form.duration > 0) {
     loading.value = true;
@@ -91,19 +100,31 @@ const calculateProfit = async () => {
   }
 };
 
-// Дебаунс-обертка для функции calculateProfit
 const debouncedCalculateProfit = debounce(calculateProfit, 200);
 
-// Слежение за изменениями полей формы
 watch(form, debouncedCalculateProfit, { deep: true });
 
-// Обработка отправки формы
 const handleSubmit = async () => {
   await calculateProfit();
 };
 
 const formattedIncome = computed(() => {
   return new Intl.NumberFormat("ru-RU").format(profit.value);
+});
+
+const checkScroll = () => {
+  if (window.scrollY > 600) {
+    resetCalc();
+    console.log("Сброс калькулятора до дефолтных значений");
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", checkScroll);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", checkScroll);
 });
 </script>
 
