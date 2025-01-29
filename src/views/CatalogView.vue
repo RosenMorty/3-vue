@@ -53,6 +53,7 @@ const changePage = async (page: number) => {
     await loadProducts(page);
   }
 };
+console.log(123);
 
 watchEffect(() => {
   const search = searchText.value;
