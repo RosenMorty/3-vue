@@ -5,17 +5,16 @@
       <div class="form-group">
         <label for="months">Количество месяцев:</label>
         <input
-          v-model="form.duration"
+          v-model="duration"
           type="number"
           placeholder="Введите количество месяцев"
         />
-        <p>{{ form.months }}</p>
       </div>
 
       <div class="form-group">
         <label for="interest-rate">Процентная ставка (%):</label>
         <input
-          v-model="form.interestRate"
+          v-model="interestRate"
           type="number"
           placeholder="Введите процентную ставку"
         />
@@ -24,7 +23,7 @@
       <div class="form-group">
         <label for="deposit-amount">Сумма вклада:</label>
         <input
-          v-model="form.amount"
+          v-model="amount"
           type="number"
           placeholder="Введите сумму вклада"
         />
@@ -39,95 +38,116 @@
   </form>
 </template>
 
-<script setup lang="ts">
-import {
-  reactive,
-  ref,
-  watch,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-} from "vue";
+<script setup>
+import { ref, watch, computed, onMounted, onBeforeUnmount } from "vue";
 
-const form = reactive({
-  amount: null,
-  interestRate: null,
-  duration: null,
-});
+// const amount = ref(0);
+// const interestRate = ref(0);
+// const duration = ref(0);
+// const profit = ref(0);
+// const loading = ref(false);
 
-const resetCalc = () => {
-  form.amount = null;
-  form.interestRate = null;
-  form.duration = null;
-};
+// const getCalculatedProfit = () => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({
+//         profit:
+//           (amount.value * interestRate.value * (duration.value * 30)) /
+//           (365 * 100),
+//       });
+//     }, 2000);
+//   });
+// };
 
-const profit = ref(null);
-const loading = ref(false);
-const isScrolled = ref(false);
+// const resetCalc = () => {
+//   amount.value = 0;
+//   interestRate.value = 0;
+//   duration.value = 0;
+//   profit.value = 0;
+// };
 
-const getCalculatedProfit = async ({ amount, interestRate, duration }) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const calculatedProfit =
-        (amount * interestRate * (duration * 30)) / (365 * 100);
-      resolve({ profit: calculatedProfit });
-    }, 1000);
-  });
-};
+// const calculatedProfit = async () => {
+//   if (amount.value > 0 && interestRate.value > 0 && duration.value > 0) {
+//     loading.value = true;
+//     try {
+//       const result = await getCalculatedProfit();
+//       profit.value = result.profit;
+//     } catch (error) {
+//       console.log("Ошибка в расчетах", error);
+//       profit.value = "Ошибка";
+//     } finally {
+//       loading.value = false;
+//     }
+//   } else {
+//     profit.value = null;
+//   }
+// };
 
-const debounce = (func, delay) => {
-  let timeout;
-  return (...args) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), delay);
-  };
-};
+// const debounce = (func, delay) => {
+//   let timeout;
+//   return (...args) => {
+//     clearTimeout(timeout);
+//     timeout = setTimeout(() => func(...args), delay);
+//   };
+// };
 
-const calculateProfit = async () => {
-  if (form.amount > 0 && form.interestRate > 0 && form.duration > 0) {
-    loading.value = true;
-    try {
-      const result = await getCalculatedProfit(form);
-      profit.value = result.profit;
-    } catch (error) {
-      console.error("Ошибка при расчете прибыли:", error);
-      profit.value = "Ошибка";
-    } finally {
-      loading.value = false;
-    }
-  } else {
-    profit.value = null;
-  }
-};
+// const formattedIncome = computed(() => {
+//   console.log(profit.value);
+//   return new Intl.NumberFormat("ru-RU").format(profit.value);
+// });
 
-const debouncedCalculateProfit = debounce(calculateProfit, 200);
+// // const debouncedCalculateProfit = debounce(calculatedProfit, 200);
 
-watch(form, debouncedCalculateProfit, { deep: true });
+// watch([amount, interestRate, duration], debouncedCalculateProfit, {
+//   deep: true,
+// });
 
-const handleSubmit = async () => {
-  await calculateProfit();
-};
+// const checkScroll = () => {
+//   if (window.scrollY > 600) {
+//     resetCalc();
+//     console.log("Сброс калькулятора до дефолтных значений");
+//   }
+// };
 
-const formattedIncome = computed(() => {
-  return new Intl.NumberFormat("ru-RU").format(profit.value);
-});
+// onMounted(() => {
+//   window.addEventListener("scroll", checkScroll);
+// });
 
-const checkScroll = () => {
-  if (window.scrollY > 600) {
-    resetCalc();
-    console.log("Сброс калькулятора до дефолтных значений");
-  }
-};
+// onBeforeUnmount(() => {
+//   window.removeEventListener("scroll", checkScroll);
+// });
 
-onMounted(() => {
-  window.addEventListener("scroll", checkScroll);
-});
+// const getRandomNumber = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     if (Math.random() * 10 + 1 > 9) {
+//       resolve("Успешно выполнилось");
+//     } else {
+//       reject("Число меньше 9");
+//     }
+//   }, 2000);
+// });
 
-onBeforeUnmount(() => {
-  window.removeEventListener("scroll", checkScroll);
-});
+// getRandomNumber
+//   .then((successData) => {
+//     console.log("Успешно:", successData);
+//   })
+//   .catch((error) => {
+//     console.log("Ошибка:", error);
+//   });
+
+// const fetchUserData = async () => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({ id: 1, name: "Vlad", age: 22 });
+//     }, 1500);
+//   });
+// };
+
+// async () => {
+//   const user = await fetchUserData();
+//   console.log("Данные пользователя:", user);
+// };
 </script>
-
 <style scoped>
 .form-container {
   max-width: 400px;

@@ -22,7 +22,6 @@ const user = {
 const router = useRouter();
 
 const route = useRoute();
-console.log(route);
 </script>
 
 <style>
