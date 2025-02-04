@@ -47,25 +47,25 @@ const interestRate = ref(0);
 const duration = ref(0);
 const profit = ref(0);
 
+// watch(
+//   () => {},
+//   () => {
+//     profit.value =
+//       (amount.value * interestRate.value * (duration.value * 30)) / (365 * 100);
+//   }
+// );
+
+const debounce = (func, delay) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+};
+
 const formattedProfit = computed(
   () => `${new Intl.NumberFormat("ru-RU").format(profit.value)}`
 );
-
-watch(
-  () => {},
-  () => {
-    profit.value =
-      (amount.value * interestRate.value * (duration.value * 30)) / (365 * 100);
-  }
-);
-
-// const debounce = (func, delay) => {
-//   let timeout;
-//   return (...args) => {
-//     clearTimeout(timeout);
-//     timeout = setTimeout(() => func(...args), delay);
-//   };
-// };
 
 const reset = () =>
   window.scrollY > 600 &&
